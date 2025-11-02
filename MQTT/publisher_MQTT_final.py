@@ -1,5 +1,5 @@
 # ===============================================================
-#  PUBLISHER MQTT + NatNet  (Versión comentada en profundidad)
+#  PUBLISHER MQTT 
 # ===============================================================
 # 
 # Descripción general:
@@ -343,5 +343,6 @@ streaming_client.rigid_body_listener = on_rigid_body #Callback principal
 
 # Inicia la recepción de datos de MoCap
 streaming_client.run()
+
 
 
