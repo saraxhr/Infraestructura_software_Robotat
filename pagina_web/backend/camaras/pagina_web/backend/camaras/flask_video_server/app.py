@@ -13,7 +13,8 @@
 # - Se utiliza Waitress como servidor WSGI en producción, ya que Flask por sí solo
 #   corta las conexiones MJPEG tras ~1 segundo
 # ============================================================
-
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
 
 # ------------------------------------------------------------
 # Importación de librerías
@@ -198,3 +199,4 @@ if __name__ == "__main__":
     # Esto permite que otros dispositivos dentro de la red local accedan al stream.
     # Puerto configurado en 5000 (puede modificarse si se necesita)
     serve(app, host="0.0.0.0", port=5000)
+
