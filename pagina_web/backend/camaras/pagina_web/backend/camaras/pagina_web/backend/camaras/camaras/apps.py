@@ -12,6 +12,9 @@
 # (aunque en este caso la app no tiene modelos, es buena práctica mantenerlo).
 # ============================================================
 
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
+
 # ------------------------------------------------------------
 # Importación del módulo base de configuración de apps en Django
 # ------------------------------------------------------------
@@ -39,3 +42,4 @@ class CamarasConfig(AppConfig):
     # dentro de INSTALLED_APPS en settings.py.
     # -------------------------------------------------------
     name = 'camaras'
+
