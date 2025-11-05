@@ -22,6 +22,10 @@ El cliente MQTT se ejecuta en un **hilo separado** para no bloquear la ejecució
 normal del servidor Django.
 =====================================================================
 """
+
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
+
 # ================================================================
 # Importaciones necesarias
 # ================================================================
@@ -202,3 +206,4 @@ def start_mqtt_client():
     print("[MQTT]  Cliente MQTT iniciado correctamente.")
     print(f"[MQTT]  Escuchando: {TOPIC} y {TELEMETRY_TOPIC}")
     print(f"[MQTT]  Listo para publicar en: {COMMAND_TOPIC}")
+
