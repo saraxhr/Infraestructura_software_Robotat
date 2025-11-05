@@ -17,8 +17,10 @@ En este caso, estamos enlazando el módulo `mqtt_bridge` con la clase
 inicializar el cliente MQTT al arrancar el servidor Django.
 ===========================================================
 """
+#  Autor:  Sara Hernández
 
 # Indica a Django que use la configuración definida en la clase `MqttBridgeConfig`
 # del archivo `apps.py` como la configuración principal de esta aplicación.
 
 default_app_config = 'mqtt_bridge.apps.MqttBridgeConfig'
+
