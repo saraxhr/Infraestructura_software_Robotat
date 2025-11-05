@@ -17,6 +17,9 @@
 #     la cual fue reemplazada por el microservidor Flask para evitar sobrecargar Django.
 # ============================================================
 
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
+
 
 # ------------------------------------------------------------
 # Importación de funciones y módulos necesarios
@@ -65,3 +68,4 @@ urlpatterns = [
     # --------------------------------------------------------
     path("api/cameras/<cam_id>/ptz/",    views.ptz_view,    name="camera_ptz"),      # Control PTZ
 ]
+
