@@ -22,6 +22,8 @@ Además, este consumer también puede recibir peticiones desde el frontend,
 como por ejemplo la solicitud de la lista de tópicos MQTT activos.
 =====================================================================
 """
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
 
 # ================================================================
 # Bibliotecas necesarias
@@ -198,3 +200,4 @@ class MqttConsumer(AsyncWebsocketConsumer):
 
         # Envía el mensaje JSON al cliente WebSocket correspondiente
         await self.send(text_data=json.dumps(data, ensure_ascii=False, separators=(',', ':')))
+
