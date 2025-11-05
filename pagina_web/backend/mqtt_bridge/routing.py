@@ -22,6 +22,8 @@ Este archivo se integra luego en el `asgi.py` del proyecto principal,
 donde se combinan las rutas WebSocket de todas las apps registradas.
 =====================================================================
 """
+
+#  Autor:  Sara Hernández
 # ================================================================
 # Importaciones necesarias
 # ===============================================================
@@ -45,3 +47,4 @@ websocket_urlpatterns = [
     # ------------------------------------------------------------
     path("ws/mqtt/", consumers.MqttConsumer.as_asgi()),
 ]
+
