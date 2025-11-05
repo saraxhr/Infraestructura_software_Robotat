@@ -18,6 +18,9 @@
 # - Acceso concurrente seguro con locks.
 # ============================================================
 
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
+
 # ------------------------------------------------------------
 # Importación de bibliotecas necesarias
 # ------------------------------------------------------------
@@ -206,3 +209,4 @@ def mjpeg_generator(camera: VideoCamera):
         time.sleep(0.05)
 
     print(f" Finalizando MJPEG para {camera.rtsp_url}")
+
