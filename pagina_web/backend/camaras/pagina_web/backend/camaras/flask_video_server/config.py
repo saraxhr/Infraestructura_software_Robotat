@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # Este archivo centraliza la configuración de las cámaras Amcrest disponibles.
 
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
+
 CAMERAS = {
     "1": {  # ID lógico que usará el frontend (cámara 1)
         "ip": "192.168.50.211",                                   # IP de la cámara
@@ -19,3 +22,4 @@ CAMERAS = {
     },
     # Si luego se agregan más, copiar y pegar con IDs "3"..."6"
 }
+
