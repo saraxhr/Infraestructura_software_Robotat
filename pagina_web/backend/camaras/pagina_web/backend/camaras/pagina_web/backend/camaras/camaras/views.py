@@ -17,6 +17,9 @@
 # de forma segura con las cámaras Amcrest.
 # ============================================================
 
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
+
 # ------------------------------------------------------------
 # Importación de librerías estándar
 # ------------------------------------------------------------
@@ -189,3 +192,4 @@ def ptz_view(request, cam_id):
     # Envía comando "stop" para detener el movimiento
     except Exception as e:
         return JsonResponse({"ok": False, "error": str(e)}, status=500)
+
