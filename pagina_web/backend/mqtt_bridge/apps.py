@@ -19,7 +19,8 @@ cliente MQTT, un hilo de escucha o un servicio continuo.
 
 ===========================================================
 """
-
+#  Autor:  Sara Hernández
+#  Colaboración técnica: ChatGPT (GPT-5)
 
 # -----------------------------------------------------------
 # Importación del módulo base de configuración de aplicaciones en Django.
@@ -54,3 +55,4 @@ class MqttBridgeConfig(AppConfig):
         # Esta función típicamente establece conexión con el broker,
         # define los callbacks de suscripción y comienza el bucle de escucha (loop_start()).
         start_mqtt_client()
+
