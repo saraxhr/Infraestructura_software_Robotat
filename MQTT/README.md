@@ -1,6 +1,7 @@
 #  Publisher MQTT - Robotat UVG
 
 #Descripción general
+
 Este repositorio contiene los scripts utilizados para la publicación de datos hacia un **broker MQTT**.  
 
 El código principal —`publisher_MQTT_final.py`— se desarrolló utilizando como base las funciones y estructuras implementadas por **MSc. Miguel Zea**, adaptándolas para integrarse a la arquitectura MQTT.
