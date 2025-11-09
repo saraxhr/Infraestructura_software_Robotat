@@ -2,7 +2,7 @@
 # 🌐 Frontend — Plataforma Robotat
 
 Este repositorio contiene la infraestructura base del **frontend** para la plataforma Robotat de la Universidad del Valle de Guatemala.  
-El sistema fue desarrollado con **Vite**, **React**, **TypeScript** y **TailwindCSS** y constituye la interfaz visual del sistema de monitoreo y control del laboratorio Robotat.
+El sistema fue desarrollado con **Vite**, **React** y **TailwindCSS** y constituye la interfaz visual del sistema de monitoreo y control del laboratorio Robotat.
 
 ---
 
