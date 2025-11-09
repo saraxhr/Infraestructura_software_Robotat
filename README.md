@@ -23,25 +23,7 @@ En una etapa posterior, esta infraestructura servirá como base para la **conexi
 
 ---
 
-## 🧩 Estructura del Repositorio
 
-```
-pagina_web/
-│
-├── backend/                   # Lógica del servidor Django
-│   ├── robotat_web/           # Proyecto Django principal (ASGI, admin, rutas API)
-│   ├── mqtt_bridge/           # Comunicación entre broker MQTT y backend
-│   ├── flask_video_server/    # Servidor Flask para transmisión MJPEG
-│   ├── camaras/               # Control PTZ y video de cámaras Amcrest
-│   └── README.md              # Documentación de cada módulo
-│
-├── frontend/                  # Interfaz web (React + Vite + Tailwind)
-│   └── src/                   # Componentes, páginas y estilos
-│
-└── README.md                  # Este archivo
-```
-
----
 
 ## ⚙️ Configuración del Backend (Django + Daphne)
 
