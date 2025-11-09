@@ -39,6 +39,29 @@ pip install django requests
 
 ---
 
+---
+
+## 🧩 Librerías necesarias para `views.py`
+
+El archivo **`views.py`** requiere las siguientes librerías y módulos para funcionar correctamente:
+
+### 🔹 Librerías estándar de Python
+Estas ya vienen incluidas con Python, por lo que **no requieren instalación manual**:
+
+| Librería | Uso principal |
+|-----------|----------------|
+| `time` | Permite hacer pausas breves entre comandos PTZ. |
+| `json` | Decodifica el contenido JSON recibido en solicitudes POST. |
+
+---
+
+### 🔹 Librerías externas (instalación requerida)
+Debes asegurarte de tener instaladas las siguientes librerías antes de ejecutar el servidor:
+
+```bash
+pip install django requests
+
+
 ## 🧱 Creación del proyecto Django y registro de la app
 
 Si aún no tienes tu proyecto base configurado, puedes crearlo con los siguientes comandos:
