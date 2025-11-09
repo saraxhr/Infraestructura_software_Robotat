@@ -144,6 +144,12 @@ Estas librerías permiten:
 - Controlar la tasa de refresco y reconexión (`time`).
 
 ---
+## 🚀 Ejecución del servidor
+
+Para iniciar el microservidor Flask y habilitar la transmisión MJPEG, ejecuta en la terminal desde la carpeta `flask_video_server`:
+
+```bash
+python app.py
 
 ## 📡 Endpoints disponibles
 
@@ -189,5 +195,5 @@ http://localhost:5000/stop/1
 
 ---
 
-## 🧾 Créditos
+
 
