@@ -53,7 +53,7 @@ La aplicación estará disponible en:
 | `eslint.config.js` | Configuración de ESLint para mantener un código limpio y ordenado. | ⚙️ Opcional, solo si quieres nuevas reglas. |
 | `postcss.config.js` | Procesa los estilos de TailwindCSS y aplica compatibilidad entre navegadores. | 🚫 No. |
 | `tailwind.config.js` | Configura TailwindCSS (colores, fuentes, paths). | ✅ Sí, puedes personalizar el diseño. |
-| `vite.config.ts` | Configuración de Vite (puerto, plugins, alias). | ✅ Sí, puedes cambiar el puerto o añadir alias. |
+| `vite.config.ts` | Configuración de Vite (puerto, plugins, alias). | ✅ Sí, puedes cambiar el puerto . |
 | `tsconfig.app.json` | Configura la compilación de TypeScript para la app. | 🚫 No. |
 | `tsconfig.node.json` | Configura TypeScript para scripts del entorno Node (como Vite). | 🚫 No. |
 | `tsconfig.json` | Archivo raíz que conecta ambos `tsconfig`. | 🚫 No. |
