@@ -1,4 +1,4 @@
-# 🤖 Proyecto Robotat UVG — Plataforma de Control y Monitoreo
+# 🤖 Proyecto Robotat UVG — Infraestructura de software para la conexión remota sincrónica con el laboratorio Robotat de la Universidad del Valle de Guatemala
 
 ## 📘 Descripción General
 
