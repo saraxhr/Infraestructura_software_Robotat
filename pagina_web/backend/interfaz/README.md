@@ -33,7 +33,8 @@ interfaz/
 Asegúrate de tener instaladas las siguientes librerías antes de ejecutar el servidor Django:
 
 ```bash
-pip install django djangorestframework djangorestframework-simplejwt paho-mqtt
+pip install django djangorestframework djangorestframework-simplejwt paho-mqtt daphne
+
 ```
 
 ---
@@ -66,16 +67,14 @@ pip install django djangorestframework djangorestframework-simplejwt paho-mqtt
 
 ---
 
+
 ## 🔧 Ejecución del servidor
 
-Para correr el backend desde la raíz del proyecto Django:
+Para correr el backend utilizando **Daphne** (ASGI server):
 
 ```bash
-python manage.py runserver
+daphne -p 8000 robotat_web.asgi:application
 ```
-
-El servidor se levantará por defecto en  
-👉 `http://127.0.0.1:8000/`
 
 ---
 
@@ -114,16 +113,6 @@ El servidor se levantará por defecto en
 - Los endpoints están protegidos con autenticación JWT.  
 - El sistema registra automáticamente las sesiones y actualiza métricas al cerrar sesión.
 
----
-
-## ▶️ Cómo probar la API
-
-Puedes usar **Postman** o **curl**.  
-Ejemplo de login con JWT:
-
-```bash
-curl -X POST http://127.0.0.1:8000/api/login/      -H "Content-Type: application/json"      -d '{"email": "admin@uvg.edu.gt", "password": "tu_contraseña"}'
-```
 
 ---
 
@@ -148,4 +137,3 @@ Ejemplo de JSON enviado:
 
 ---
 
-para la gestión local y futura conexión remota del laboratorio de robótica.
