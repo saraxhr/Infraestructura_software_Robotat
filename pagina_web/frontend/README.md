@@ -46,7 +46,7 @@ La aplicación estará disponible en:
 
 | Archivo | Descripción | ¿Se puede modificar? |
 |----------|--------------|----------------------|
-| `.gitignore` | Define qué archivos y carpetas no deben subirse a GitHub (por ejemplo `node_modules/`, `.env/`). | ✅ Sí, puedes agregar más exclusiones. |
+| `.gitignore` | Define qué archivos y carpetas no deben subirse a GitHub (por ejemplo `node_modules/`, `.env/`(carpeta ambiente virtual). | ✅ Sí, puedes agregar más exclusiones. |
 | `package.json` | Contiene metadatos del proyecto y dependencias. | ⚙️ Solo editar si agregas o quitas librerías. |
 | `package-lock.json` | Registra versiones exactas de dependencias (no se edita manualmente). | 🚫 No. |
 | `index.html` | Punto de entrada de la aplicación. Contiene el `<div id="root">` donde React monta la interfaz. | ✅ Sí, puedes cambiar el título o el ícono. |
@@ -62,10 +62,9 @@ La aplicación estará disponible en:
 
 ## 🧠 Notas importantes
 
-- La carpeta **`node_modules/`** se genera automáticamente con `npm install` y **no debe subirse a GitHub**.  
-- Si eliminas `node_modules/`, puedes recrearla ejecutando `npm install` nuevamente.  
-- Solo los archivos listados arriba deben versionarse (subirse al repositorio).  
-- El archivo `.env` se utiliza para variables de entorno (como claves o URLs privadas) y **debe mantenerse fuera del repositorio**.
+- La carpeta **`node_modules/`** se genera automáticamente con `npm install`. 
+- Si se elimina `node_modules/`, se puede recrear ejecutando `npm install` nuevamente.  
+- La carpeta `.env` (ambiente virtual) se utiliza para variables de entorno (como claves o URLs privadas).
 
 ---
 
