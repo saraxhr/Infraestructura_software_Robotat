@@ -151,6 +151,9 @@ Para iniciar el microservidor Flask y habilitar la transmisión MJPEG, ejecuta e
 ```bash
 python app.py
 
+```
+
+---
 ## 📡 Endpoints disponibles
 
 | Endpoint | Método | Descripción |
