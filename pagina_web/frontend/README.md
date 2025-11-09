@@ -21,7 +21,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 Clona el repositorio y entra al directorio del frontend:
 
 ```bash
-git clone https://github.com/tu_usuario/Infraestructura_software_Robotat.git
+git clone https://github.com/usuario/Infraestructura_software_Robotat.git
 cd Infraestructura_software_Robotat
 ```
 
