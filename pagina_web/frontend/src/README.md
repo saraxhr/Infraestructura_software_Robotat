@@ -28,8 +28,6 @@ src/
 │   ├── admin/
 │   ├── student/
 │   └── researcher/
-├── assets/            # Imágenes, íconos o recursos multimedia
-├── styles/            # Estilos adicionales (si los hubiera)
 └── main.tsx           # Punto de entrada del frontend
 ```
 
