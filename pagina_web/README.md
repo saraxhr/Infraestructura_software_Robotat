@@ -147,7 +147,6 @@ pip install -r requirements.txt
 - `Django`, `djangorestframework`, `djangorestframework-simplejwt` (API y autenticación)
 - `daphne` (servidor ASGI)
 - `requests`, `numpy`, `opencv-python` (procesamiento de datos y comunicación)
-- Utilitarios: `asgiref`, `sqlparse`, `tzdata`, entre otros.
 
 ---
 
