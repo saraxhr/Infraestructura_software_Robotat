@@ -1,26 +1,28 @@
 # 📦 Carpeta — `pagina_web`
 
-En la carpeta de pagina_web, se encuentran los siguientes archivos:
+La carpeta `pagina_web` contiene los archivos fundamentales para la configuración y ejecución del entorno de desarrollo y despliegue del sistema. En ella se incluyen:
+
 - `manage.py`
 - `package.json`
 - `package-lock.json`
 - `requirements.txt`
 
-
 ---
 
 ## 1) `manage.py` (Django)
 
-### 🧠 ¿Qué es?
-Script de utilidad de Django para ejecutar tareas administrativas: migraciones, creación de superusuarios, ejecutar comandos de management, etc.
+### 🧠 Descripción
+Archivo de utilidad de Django utilizado para la ejecución de tareas administrativas como migraciones, creación de superusuarios y administración general del proyecto.
 
-### 🛠️ ¿Cómo se genera?
-Se **crea automáticamente** al iniciar un proyecto con:
+### ⚙️ Generación
+El archivo se crea automáticamente al iniciar un nuevo proyecto Django mediante el comando:
+
 ```bash
-# Dentro de pagina_web/backend/
 django-admin startproject robotat_web
 ```
-Esto produce:
+
+Este proceso genera la siguiente estructura:
+
 ```txt
 backend/
 ├─ manage.py
@@ -31,57 +33,56 @@ backend/
    └─ wsgi.py
 ```
 
-> Tu `manage.py` actual apunta a `robotat_web.settings`, lo cual es correcto para un proyecto llamado `robotat_web`.
+El archivo `manage.py` establece la variable de entorno `DJANGO_SETTINGS_MODULE` apuntando a `robotat_web.settings`.
 
-### ▶️ Comandos clave con `manage.py`
+### ▶️ Comandos principales
 ```bash
-# Desde pagina_web/backend/
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py startapp nombre_app
-# (si usaras runserver de desarrollo)
 python manage.py runserver
 ```
 
-### 💡 Nota si usas Daphne
-Para producción/ASGI estás ejecutando:
+### 💡 Ejecución con Daphne
+En este proyecto, el servidor se ejecuta con **Daphne**, que utiliza la interfaz ASGI:
+
 ```bash
-# Desde pagina_web/backend/
 daphne -p 8000 robotat_web.asgi:application
 ```
-`manage.py` **se mantiene** para comandos administrativos.
+
+El archivo `manage.py` continúa siendo necesario para todas las operaciones administrativas del entorno Django.
 
 ---
 
 ## 2) `package.json` (Node.js / npm)
 
-### 🧠 ¿Qué es?
-Manifiesto de dependencias y scripts del entorno JavaScript. Define el nombre del paquete, dependencias (`dependencies`/`devDependencies`) y scripts (`npm run ...`).
+### 🧠 Descripción
+Archivo de configuración que define el entorno JavaScript del proyecto. Contiene las dependencias, scripts y metadatos necesarios para el frontend implementado con React y Vite.
 
-### 🛠️ ¿Cómo se genera?
-Opción A: **Inicialización vacía en una carpeta** (por ejemplo raíz o `frontend/`):
+### ⚙️ Generación
+Se genera al inicializar un proyecto con npm:
+
 ```bash
 npm init -y
 ```
-> Esto crea un `package.json` mínimo.
 
-Opción B (**recomendada para React con Vite**): scaffold directo en `frontend/`:
+Para un entorno React con Vite y TypeScript, se utiliza el siguiente comando:
+
 ```bash
-# Desde pagina_web/
 npm create vite@latest frontend -- --template react-ts
 cd frontend
 npm install
 ```
-> Este flujo crea su propio `package.json` **dentro de `frontend/`** con React, Vite y TypeScript preconfigurados.
 
-### ➕ Añadir dependencias
+Esto produce un `package.json` dentro de la carpeta `frontend` con la configuración correspondiente.
+
+### ➕ Instalación de dependencias
 ```bash
-# Ejemplos:
 npm install react react-dom
 npm install -D @types/node typescript vite
 ```
 
-### ▶️ Scripts típicos (si usas Vite)
+### ▶️ Scripts principales
 ```json
 {
   "scripts": {
@@ -91,8 +92,10 @@ npm install -D @types/node typescript vite
   }
 }
 ```
+
+Comandos de ejecución:
+
 ```bash
-# Uso
 npm run dev
 npm run build
 npm run preview
@@ -102,138 +105,54 @@ npm run preview
 
 ## 3) `package-lock.json` (npm lockfile)
 
-### 🧠 ¿Qué es?
-Archivo **autogenerado** por `npm` que registra las **versiones exactas** de todas las dependencias instaladas (y sus árboles). Garantiza instalaciones reproducibles.
+### 🧠 Descripción
+Archivo autogenerado por npm que registra las versiones exactas de las dependencias instaladas. Garantiza que las instalaciones sean reproducibles en diferentes entornos.
 
-### 🛠️ ¿Cómo se genera? 
-Se crea/actualiza al correr:
+### ⚙️ Generación
+Se crea o actualiza automáticamente al instalar dependencias:
+
 ```bash
 npm install
 ```
-o al agregar/quitar dependencias (`npm install paquete`, `npm uninstall paquete`).
 
-### 🔁 Reconstrucción exacta en otra máquina
+### 🔁 Instalación reproducible
 ```bash
-# Con el lockfile presente:
 npm ci
 ```
-> `npm ci` usa el `package-lock.json` para instalar **exactamente** las versiones bloqueadas (ideal para CI/producción).
+
+El comando `npm ci` instala las dependencias utilizando exactamente las versiones registradas en el `package-lock.json`.
 
 ---
 
 ## 4) `requirements.txt` (Python)
 
-### 🧠 ¿Qué es?
-Lista de dependencias Python (con versiones) que tu backend necesita para ejecutarse.
+### 🧠 Descripción
+Lista de dependencias necesarias para la ejecución del backend en Django. Contiene los paquetes y versiones utilizados por el proyecto.
 
-### 🛠️ ¿Cómo se genera?
-En tu entorno virtual (activado) después de instalar tus paquetes:
+### ⚙️ Generación
+Dentro del entorno virtual, después de instalar los paquetes requeridos:
+
 ```bash
-# Ejemplo: instalación de dependencias
 pip install django djangorestframework djangorestframework-simplejwt daphne requests numpy opencv-python
-
-# Congelar a requirements.txt
 pip freeze > requirements.txt
 ```
-> Esto captura versiones exactas. Si ya tienes `requirements.txt`, puedes instalarlo así:
+
+Para instalar las dependencias registradas:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### ✅ Paquetes típicos en tu caso
-- `Django`, `djangorestframework`, `djangorestframework-simplejwt` (API y auth)
+### 📦 Paquetes principales
+- `Django`, `djangorestframework`, `djangorestframework-simplejwt` (API y autenticación)
 - `daphne` (servidor ASGI)
-- `requests`, `numpy`, `opencv-python` (utilidades de video/cómputo)
-- Otros utilitarios: `asgiref`, `sqlparse`, etc.
+- `requests`, `numpy`, `opencv-python` (procesamiento de datos y comunicación)
+- Utilitarios: `asgiref`, `sqlparse`, `tzdata`, entre otros.
 
 ---
 
-## 🧪 Comandos “de cero a funcionando” (receta resumida)
-
-### A) Backend (Python/Django)
-```bash
-# 1) Crear/activar entorno virtual
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# Linux/macOS
-# source venv/bin/activate
-
-# 2) Crear proyecto Django (si aún no existe)
-cd backend
-django-admin startproject robotat_web
-
-# 3) Instalar dependencias
-cd ..        # regresar a raiz si el requirements está en pagina_web/
-pip install -r requirements.txt
-
-# 4) Migraciones y superusuario
-cd backend
-python manage.py migrate
-python manage.py createsuperuser
-
-# 5) Ejecutar con Daphne (ASGI)
-daphne -p 8000 robotat_web.asgi:application
-```
-
-### B) Frontend (Vite/React recomendado dentro de `frontend/`)
-```bash
-# 1) Scaffold del frontend (si no existe)
-npm create vite@latest frontend -- --template react-ts
-
-# 2) Instalar dependencias del frontend
-cd frontend
-npm install
-
-# 3) Ejecutar entorno de desarrollo
-npm run dev
-```
-
----
-
-## 📌 Buenas prácticas de versionado (Git)
-
-**Sube al repo:**
-- `manage.py`
-- `requirements.txt`
-- `package.json`
-- `package-lock.json`
-
-**Ignora en el repo (`.gitignore`):**
-```
-# Python
-venv/
-__pycache__/
-*.pyc
-
-# Node
-node_modules/
-
-# OS/IDE
-.DS_Store
-.idea
-.vscode/
-```
-
----
-
-## ❓ Preguntas rápidas
-
-- **¿Debe existir `package.json` en la raíz y también en `frontend/`?**  
-  Lo habitual es mantener **uno dentro de `frontend/`** para aislar el mundo npm del frontend. Solo usa un `package.json` en la raíz si **realmente** necesitas scripts npm a nivel de monorepo.
-
-- **¿Puedo regenerar `requirements.txt` si agrego/quito librerías?**  
-  Sí. Tras instalar/desinstalar paquetes en tu venv, ejecuta nuevamente: `pip freeze > requirements.txt`.
-
-- **¿Qué pasa si borro `package-lock.json`?**  
-  Se recrea en la próxima instalación (`npm install`). Sin embargo, **conservarlo** asegura instalaciones reproducibles (y `npm ci`).
-
----
-
-### ✅ Resumen
-- **`manage.py`**: lo crea `startproject`, úsalo para tareas Django.
-- **`package.json`**: lo crea `npm init` (o el scaffold de Vite); define dependencias/scripts.
-- **`package-lock.json`**: lo crea `npm install`; bloquea versiones exactas.
-- **`requirements.txt`**: lo creas con `pip freeze > requirements.txt`; instala con `pip install -r`.
-
-¡Listo! Con esto puedes documentar exactamente **qué son** y **cómo se generan** estos archivos en tu repo.
+## ✅ Resumen
+- **`manage.py`**: generado por `startproject`; ejecuta tareas administrativas de Django.  
+- **`package.json`**: generado por `npm init`; define dependencias y scripts del entorno JavaScript.  
+- **`package-lock.json`**: creado por `npm install`; bloquea versiones exactas de dependencias.  
+- **`requirements.txt`**: generado con `pip freeze`; contiene las dependencias de Python del proyecto.
