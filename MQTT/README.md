@@ -1,6 +1,7 @@
 #  Publisher MQTT - Robotat UVG
 
-#Descripción general
+
+## Descripción general 
 
 Este repositorio contiene los scripts utilizados para la publicación de datos hacia un **broker MQTT**.  
 
@@ -62,6 +63,5 @@ persistence_location C:\Program Files\mosquitto\data\
 
 
 
-```bash
-pip install paho-mqtt numpy
+
 
