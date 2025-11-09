@@ -161,28 +161,6 @@ Aquí se implementan las funciones que gestionan las solicitudes y comunican Dja
 
 ---
 
-## 🚀 Ejecución del servidor Django
-
-Desde la raíz del proyecto (`robotat_web/`):
-
-```bash
-python manage.py runserver
-```
-
-Por defecto el servidor se ejecutará en:
-
-```
-http://127.0.0.1:8000/
-```
-
-Luego podrás acceder a los endpoints:
-
-```
-http://127.0.0.1:8000/api/cameras/1/status/
-http://127.0.0.1:8000/api/cameras/1/ptz/
-```
-
----
 
 ## 🧰 Requisitos del sistema
 
@@ -209,6 +187,4 @@ http://127.0.0.1:8000/api/cameras/1/ptz/
 ## 🧾 Créditos
 
 **Autora:** Sara Hernández  
-
-**Asesor:** MSc. Miguel Zea  
 **Colaboración:** ChatGPT (OpenAI)
