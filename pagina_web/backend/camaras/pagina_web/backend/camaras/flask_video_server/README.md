@@ -1,99 +1,81 @@
-# 📸 Aplicación Django — Control de Cámaras IP (Robotat UVG)
+# 🎥 Microservidor Flask — Transmisión de Video MJPEG (Robotat UVG)
 
 ## 📘 Descripción general
-La carpeta **`camaras/`** forma parte del backend del proyecto **Robotat UVG** y está desarrollada con **Django**.  
-Su propósito es permitir el **control y monitoreo básico de cámaras IP Amcrest**, brindando endpoints que permiten:
+La carpeta **`flask_video_server/`** implementa un **microservidor Flask** encargado de transmitir video en vivo desde múltiples cámaras IP Amcrest mediante el protocolo **MJPEG**.
 
-- Consultar si una cámara está **en línea (online/offline)**.  
-- Enviar **comandos PTZ (Pan, Tilt, Zoom, Home)** mediante solicitudes HTTP seguras.  
-- Preparar la infraestructura para la transmisión en vivo, que se maneja por separado en `flask_video_server/`.
+Su función principal es permitir la **visualización en tiempo real** desde navegadores o interfaces web, de forma **independiente al backend Django**, optimizando rendimiento y estabilidad mediante hilos y el servidor **Waitress**.
 
 ---
 
 ## ⚙️ Estructura de la carpeta
 
 ```
-camaras/
+flask_video_server/
 │
-├── apps.py        → Configura la app "camaras" dentro del proyecto Django.
-├── config.py      → Define IPs, usuarios, contraseñas y URL RTSP de las cámaras Amcrest.
-├── urls.py        → Declara los endpoints HTTP que exponen las funciones de la app.
-└── views.py       → Implementa la lógica para control PTZ y verificación de conexión.
+├── app.py              → Servidor Flask que maneja los endpoints de streaming y control.
+├── config.py           → Archivo con la configuración (IP, usuario, contraseña y RTSP) de las cámaras.
+└── video_stream.py     → Clase principal `VideoCamera` que gestiona la captura, reconexión y codificación JPEG.
 ```
-
-
-## 📦 Instalación de dependencias
-
-Antes de ejecutar esta aplicación, asegúrate de tener instalado **Python 3.9 o superior**.  
-Luego instala las dependencias necesarias ejecutando:
-
-```bash
-pip install django requests
-```
-
-| Biblioteca | Descripción |
-|-----------|-------------|
-| **Django** | Framework principal del backend, maneja rutas, vistas y respuestas HTTP. |
-| **Requests** | Permite enviar solicitudes HTTP hacia las cámaras Amcrest mediante autenticación Digest. |
 
 ---
 
+## 🧩 Librerías necesarias
 
-## 🧩 Bibliotecas necesarias para `views.py`
+Antes de ejecutar el servidor, instala las siguientes dependencias:
 
-El archivo **`views.py`** utiliza las siguientes bibliotecas y módulos para funcionar correctamente:
+```bash
+pip install flask waitress opencv-python numpy
+```
 
-### 🔹 Bibliotecas estándar de Python
-Estas vienen incluidas con Python, por lo que **no es necesario instalarlas**:
-
-| Bibliotecas | Uso principal |
+| Librería | Uso principal |
 |-----------|----------------|
-| `time` | Permite realizar pausas breves entre comandos PTZ. |
-| `json` | Decodifica y codifica datos JSON (para solicitudes y respuestas). |
+| **Flask** | Framework liviano usado para crear el servidor HTTP que transmite los flujos de video. |
+| **Waitress** | Servidor WSGI de producción; mantiene las conexiones MJPEG activas de forma estable. |
+| **OpenCV (`cv2`)** | Captura los fotogramas RTSP desde las cámaras y los codifica en formato JPEG. |
+| **NumPy** | Biblioteca requerida por OpenCV para manejar matrices de píxeles. |
+| **Threading** | Módulo estándar de Python para crear hilos y manejar múltiples cámaras simultáneamente. |
+| **Time** | Controla la frecuencia de lectura de frames y tiempos de reconexión. |
 
 ---
 
-### 🔹 Bibliotecas externas (requieren instalación)
-Debes instalar las siguientes bibliotecas antes de ejecutar el servidor:
+## 🧱 Archivos y su función
+
+### 📄 `app.py`
+Es el archivo principal del microservidor Flask.  
+Permite iniciar el servidor, manejar los endpoints HTTP y controlar los flujos de video MJPEG.
+
+#### 📦 Funciones principales:
+- **`generate_stream(cam_id)`**: Genera el flujo MJPEG estable (30 FPS aprox.) de una cámara específica.
+- **`/camera/<id>`**: Entrega el video MJPEG en tiempo real.
+- **`/status`**: Devuelve un JSON con el estado de todas las cámaras activas.
+- **`/stop/<id>`**: Permite detener manualmente una cámara y liberar memoria.
+
+#### 🚀 Ejecución del servidor Flask
+Para iniciar el servidor, ejecuta el siguiente comando dentro de la carpeta `flask_video_server`:
 
 ```bash
-pip install django requests
-
-
-## 🧱 Creación del proyecto Django y registro de la app
-
-Si aún no tienes tu proyecto base configurado, puedes crearlo con los siguientes comandos:
-
-```bash
-# 1️⃣ Crear el proyecto principal
-django-admin startproject robotat_web
-
-# 2️⃣ Entrar al proyecto
-cd robotat_web
-
-# 3️⃣ Crear la aplicación de cámaras
-python manage.py startapp camaras
-
-# 4️⃣ Agregar la app al archivo settings.py
-# Abre robotat_web/settings.py y agrega en INSTALLED_APPS:
-# 'camaras',
+python app.py
 ```
 
-✅ Esto crea la estructura base del proyecto Django y habilita la aplicación `camaras` para ejecutarse correctamente.
+Esto iniciará el servidor con **Waitress** en el puerto **5000** y disponible en todas las interfaces de red:
 
----
+```
+Servidor Flask de video iniciado con Waitress en http://0.0.0.0:5000
+```
 
-## 🧩 Descripción detallada de los archivos
+Puedes acceder al stream desde un navegador con la URL:
+```
+http://localhost:5000/camera/1
+```
 
-### 📄 `apps.py`
-Define la clase `CamarasConfig`, que registra la aplicación **“camaras”** dentro del proyecto Django.  
-Esto permite que Django cargue e inicialice la app al arrancar el servidor.
+*(Reemplaza `1` por el ID lógico de la cámara definido en `config.py`.)*
 
 ---
 
 ### ⚙️ `config.py`
-Contiene el diccionario `CAMERAS`, donde se definen las cámaras Amcrest disponibles.  
-Cada entrada incluye la IP, usuario, contraseña y la URL RTSP para transmisión de video.
+Contiene la configuración de las cámaras Amcrest disponibles, incluyendo credenciales y URLs RTSP.
+
+Ejemplo:
 
 ```python
 CAMERAS = {
@@ -108,104 +90,104 @@ CAMERAS = {
         "user": "admin",
         "password": "12345678UVG",
         "rtsp": "rtsp://admin:12345678UVG@192.168.50.212:554/cam/realmonitor?channel=1&subtype=1",
-    }
+    },
 }
 ```
 
-📌 **Notas importantes:**
-- Puedes agregar más cámaras duplicando la estructura y cambiando el número de ID (`"3"`, `"4"`, etc.).  
-- `subtype=1` usa el **substream** (flujo de menor resolución), ideal para transmisión fluida con baja latencia.  
-- Este archivo es el único que debes modificar si cambian las IPs o contraseñas de las cámaras.
+📌 **Notas:**
+- `subtype=1` corresponde al **substream** (flujo de menor resolución), ideal para transmisión fluida con bajo ancho de banda.  
+- Puedes agregar más cámaras copiando y pegando la estructura con IDs `"3"`, `"4"`, etc.  
+- Los datos aquí definidos son importados automáticamente en `app.py`.
 
 ---
 
-### 🌐 `urls.py`
-Define las rutas HTTP (endpoints) que permiten interactuar con las cámaras.  
-Cada endpoint está vinculado a una función dentro de `views.py`.
+### 🎞️ `video_stream.py`
+Define la clase **`VideoCamera`**, encargada de manejar las conexiones RTSP y la codificación JPEG.  
+Se ejecuta en hilos independientes para cada cámara activa.
 
-| Endpoint | Método | Función asociada | Descripción |
-|-----------|---------|------------------|--------------|
-| `/api/cameras/<id>/status/` | `GET` | `status_view` | Verifica si una cámara está en línea (online/offline). |
-| `/api/cameras/<id>/ptz/` | `POST` | `ptz_view` | Envía comandos PTZ (movimiento de cámara). |
+#### 🔹 Funciones principales:
+- **`start()`** → Inicia el hilo que mantiene el flujo RTSP abierto.  
+- **`_update()`** → Captura frames continuamente, maneja reconexiones automáticas y controla la frecuencia (20 FPS aprox.).  
+- **`get_jpeg_frame()`** → Devuelve el último frame en formato JPEG listo para enviar por HTTP.  
+- **`stop()`** → Detiene el hilo y libera recursos.  
+- **`reconnect()`** → Reintenta conexión manualmente.  
+- **`ensure_alive()`** → Verifica el estado del stream RTSP y fuerza reconexión si es necesario.
 
-Para activar estas rutas dentro del proyecto principal (`robotat_web`), abre `robotat_web/urls.py` y agrega:
+También incluye un generador independiente **`mjpeg_generator(camera)`** que transforma los frames en un flujo MJPEG compatible con navegadores.
 
+---
+
+## 🧩 Librerías utilizadas en los archivos
+
+### 📜 `app.py`
 ```python
-from django.urls import path, include
+from flask import Flask, Response, jsonify
+from video_stream import VideoCamera
+from config import CAMERAS
+import threading
+import time
+from waitress import serve  # Se usa al ejecutar el servidor
+```
 
-urlpatterns = [
-    path('', include('camaras.urls')),  # Habilita las rutas de la app "camaras"
-]
+### 📜 `video_stream.py`
+```python
+import cv2
+import threading
+import time
+import numpy as np  # Importada de manera implícita por OpenCV
+```
+
+Estas librerías permiten:
+- Crear el servidor (`Flask` y `Waitress`).
+- Capturar video (`OpenCV`).
+- Ejecutar múltiples cámaras en paralelo (`threading`).
+- Controlar la tasa de refresco y reconexión (`time`).
+
+---
+
+## 📡 Endpoints disponibles
+
+| Endpoint | Método | Descripción |
+|-----------|---------|--------------|
+| `/camera/<id>` | `GET` | Devuelve el video MJPEG de la cámara seleccionada. |
+| `/status` | `GET` | Muestra el estado de todas las cámaras activas y sus IPs. |
+| `/stop/<id>` | `GET` | Detiene una cámara y libera sus recursos. |
+
+**Ejemplo de uso:**
+```bash
+# Ver transmisión en navegador
+http://localhost:5000/camera/1
+
+# Consultar estado
+http://localhost:5000/status
+
+# Detener cámara
+http://localhost:5000/stop/1
 ```
 
 ---
-
-### 🧠 `views.py`
-Contiene la lógica principal de la aplicación.  
-Aquí se implementan las funciones que gestionan las solicitudes y comunican Django con las cámaras Amcrest mediante HTTP Digest Authentication.
-
-#### 🔹 1. `status_view(request, cam_id)`
-- **Ruta:** `/api/cameras/<id>/status/`  
-- **Método:** `GET`  
-- **Función:** Comprueba si la cámara responde correctamente.  
-- **Respuesta JSON:**
-  ```json
-  {"online": true}
-  ```
-- **Ejemplo de uso (desde navegador o Postman):**
-  ```
-  http://127.0.0.1:8000/api/cameras/1/status/
-  ```
-
----
-
-#### 🔹 2. `ptz_view(request, cam_id)`
-- **Ruta:** `/api/cameras/<id>/ptz/`  
-- **Método:** `POST`  
-- **Función:** Envía comandos de movimiento PTZ a una cámara IP.  
-- **Entrada esperada (JSON):**
-  ```json
-  {"cmd": "up", "speed": 5}
-  ```
-- **Comandos válidos:**  
-  `up`, `down`, `left`, `right`, `home`, `center`, `reset`  
-
-- **Ejemplo (terminal ):**
-  ```bash
-   -X POST http://127.0.0.1:8000/api/cameras/1/ptz/   -H "Content-Type: application/json"   -d '{"cmd": "left", "speed": 4}'
-  ```
-
-- **Respuesta esperada:**
-  ```json
-  {"ok": true}
-  ```
-
----
-
 
 ## 🧰 Requisitos del sistema
 
 | Componente | Versión recomendada |
 |-------------|---------------------|
 | **Python** | 3.9 o superior |
-| **Django** | 5.0+ |
-| **Requests** | 2.31+ |
+| **Flask** | 3.0+ |
+| **Waitress** | 3.0+ |
+| **OpenCV** | 4.9+ |
+| **NumPy** | 1.25+ |
 
 ---
 
-## ⚠️ Notas importantes
+## ⚙️ Notas técnicas
 
-- Esta aplicación **no transmite video**; su función es únicamente el **control y monitoreo** de las cámaras.  
-  La transmisión MJPEG se maneja desde la carpeta `flask_video_server/`.
-- Si las cámaras no responden:
-  - Verifica que las IPs estén accesibles desde tu red local.
-  - Confirma que las credenciales en `config.py` sean correctas.
-  - Asegúrate de que el servicio **CGI** esté habilitado en las cámaras Amcrest.
-- Los comandos PTZ se envían mediante **HTTP Digest Authentication**, un método seguro frente a ataques por texto plano.
+- Cada cámara corre en un hilo independiente, evitando bloqueos del servidor.  
+- Si una cámara pierde conexión, el sistema intenta reconectarla automáticamente.  
+- La salida MJPEG se envía con el tipo MIME `multipart/x-mixed-replace`, compatible con navegadores y etiquetas `<img>`.  
+- `Waitress` evita que el servidor cierre las conexiones de video tras 1 segundo, como ocurre con el servidor de desarrollo de Flask.  
+- Se recomienda usar resoluciones moderadas (por ejemplo, 960x540) para reducir el ancho de banda.
 
 ---
 
+## 🧾 Créditos
 
-
-**Autora:** Sara Hernández  
-**Colaboración:** ChatGPT (OpenAI)
