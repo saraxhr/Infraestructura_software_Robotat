@@ -13,7 +13,7 @@ Cada archivo define una sección funcional dentro del flujo de navegación del f
 | `HomePage.tsx` | Página pública principal. Presenta la introducción general del laboratorio, características del sistema, equipos disponibles y pie institucional. | ✅ Puede personalizarse libremente (textos, secciones o estilo). Mantener el componente `<Logo />` y los enlaces de navegación principales (`/login`, `/explorar`). |
 | `LoginPage.tsx` | Página de inicio de sesión institucional. Incluye validación del dominio `@uvg.edu.gt`, persistencia opcional, manejo de errores y modal de cambio de contraseña con validaciones. | ⚙️ Puede modificarse con precaución. No eliminar llamadas a `useAuth()` ni la validación del correo institucional. |
 | `Dashboard.tsx` | Panel principal del sistema. Muestra estadísticas, estado del laboratorio, actividad reciente y accesos rápidos según el rol del usuario (`admin`, `student`, `researcher`). | ⚙️ Puede ampliarse con nuevas métricas o componentes, pero **no eliminar la lógica que obtiene datos del backend (fetch)**. |
-| `VisitorExploration.tsx` | Página pública de exploración del laboratorio. Permite visualizar transmisiones en vivo (Flask MJPEG) y demos pregrabadas. | ⚙️ Puede personalizarse el contenido multimedia o agregar nuevas demos. Mantener la estructura principal del componente y los estados de cámara. |
+| `VisitorExploration.tsx` | Página pública de exploración del laboratorio. Permite visualizar transmisiones en vivo (Flask MJPEG) y demos pregrabados. | ⚙️ Puede personalizarse el contenido multimedia o agregar nuevos demos. Mantener la estructura principal del componente y los estados de cámara. |
 
 ---
 
