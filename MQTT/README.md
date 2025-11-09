@@ -35,7 +35,7 @@ El código utiliza las siguientes librerías:
 
 ### 🧱 2. Instalación del broker Mosquitto
 
-El sistema requiere el **broker MQTT Mosquitto**, que actúa como intermediario entre los publicadores (como este script) y los suscriptores (por ejemplo, clientes de monitoreo o control).
+El sistema requiere el **broker MQTT Mosquitto**, que actúa como intermediario entre los publicadores (como este script) y los suscriptores (robots, página web).
 
 #### 🔧 Instalación en Windows
 
