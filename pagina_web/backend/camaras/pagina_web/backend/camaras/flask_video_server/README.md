@@ -174,9 +174,9 @@ Aquí se implementan las funciones que gestionan las solicitudes y comunican Dja
 - **Comandos válidos:**  
   `up`, `down`, `left`, `right`, `home`, `center`, `reset`  
 
-- **Ejemplo (terminal con cURL):**
+- **Ejemplo (terminal ):**
   ```bash
-  curl -X POST http://127.0.0.1:8000/api/cameras/1/ptz/   -H "Content-Type: application/json"   -d '{"cmd": "left", "speed": 4}'
+   -X POST http://127.0.0.1:8000/api/cameras/1/ptz/   -H "Content-Type: application/json"   -d '{"cmd": "left", "speed": 4}'
   ```
 
 - **Respuesta esperada:**
@@ -209,7 +209,7 @@ Aquí se implementan las funciones que gestionan las solicitudes y comunican Dja
 
 ---
 
-## 🧾 Créditos
+
 
 **Autora:** Sara Hernández  
 **Colaboración:** ChatGPT (OpenAI)
