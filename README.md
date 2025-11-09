@@ -10,7 +10,7 @@ El objetivo principal del sistema es **permitir el control y monitoreo local (y 
 - **Broker MQTT (Mosquitto)**
 - **Microservidor Flask para video MJPEG**
 - **Integración con cámaras IP Amcrest**
-- **Autenticación por roles (Administrador, Docente, Estudiante, Investigador)**
+- **Autenticación por roles (Administrador, Estudiante, Investigador)**
 
 El sistema está diseñado para ejecutarse **en la red local del Robotat**, consolidando los servicios en un servidor dedicado.  
 En una etapa posterior, esta infraestructura servirá como base para la **conexión remota sincrónica** con el laboratorio.
