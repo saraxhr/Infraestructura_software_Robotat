@@ -32,7 +32,7 @@ Luego instala las dependencias necesarias ejecutando:
 pip install django requests
 ```
 
-| Librería | Descripción |
+| Biblioteca | Descripción |
 |-----------|-------------|
 | **Django** | Framework principal del backend, maneja rutas, vistas y respuestas HTTP. |
 | **Requests** | Permite enviar solicitudes HTTP hacia las cámaras Amcrest mediante autenticación Digest. |
@@ -41,22 +41,24 @@ pip install django requests
 
 ---
 
-## 🧩 Librerías necesarias para `views.py`
+---
 
-El archivo **`views.py`** requiere las siguientes librerías y módulos para funcionar correctamente:
+## 🧩 Bibliotecas necesarias para `views.py`
 
-### 🔹 Librerías estándar de Python
-Estas ya vienen incluidas con Python, por lo que **no requieren instalación manual**:
+El archivo **`views.py`** utiliza las siguientes bibliotecas y módulos para funcionar correctamente:
 
-| Librería | Uso principal |
+### 🔹 Bibliotecas estándar de Python
+Estas vienen incluidas con Python, por lo que **no es necesario instalarlas**:
+
+| Bibliotecas | Uso principal |
 |-----------|----------------|
-| `time` | Permite hacer pausas breves entre comandos PTZ. |
-| `json` | Decodifica el contenido JSON recibido en solicitudes POST. |
+| `time` | Permite realizar pausas breves entre comandos PTZ. |
+| `json` | Decodifica y codifica datos JSON (para solicitudes y respuestas). |
 
 ---
 
-### 🔹 Librerías externas (instalación requerida)
-Debes asegurarte de tener instaladas las siguientes librerías antes de ejecutar el servidor:
+### 🔹 Bibliotecas externas (requieren instalación)
+Debes instalar las siguientes bibliotecas antes de ejecutar el servidor:
 
 ```bash
 pip install django requests
