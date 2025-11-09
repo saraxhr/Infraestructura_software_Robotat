@@ -21,8 +21,7 @@ camaras/
 └── views.py       → Implementa la lógica para control PTZ y verificación de conexión.
 ```
 
----
-
+```
 ## 📦 Instalación de dependencias
 
 Antes de ejecutar esta aplicación, asegúrate de tener instalado **Python 3.9 o superior**.  
@@ -39,9 +38,6 @@ pip install django requests
 
 ---
 
----
-
----
 
 ## 🧩 Bibliotecas necesarias para `views.py`
 
