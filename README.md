@@ -15,13 +15,7 @@ El objetivo principal del sistema es **permitir el control y monitoreo local (y 
 El sistema está diseñado para ejecutarse **en la red local del Robotat**, consolidando los servicios en un servidor dedicado.  
 En una etapa posterior, esta infraestructura servirá como base para la **conexión remota sincrónica** con el laboratorio.
 
----
 
-## 🖼️ Página de inicio
-
-![Página de inicio del sistema Robotat](start.png)
-
----
 
 ---
 
@@ -80,8 +74,9 @@ npm install
 📘 **Documentación Vite:**  
 🔗 [https://vitejs.dev/guide/](https://vitejs.dev/guide/)
 
-🎥 **Video guía (Traversy Media):**  
-[Build a React App with Vite](https://www.youtube.com/watch?v=3fXc3QqjHqw)
+🎥 **Video guía:**  
+ [Video Vite(YouTube)](https://www.youtube.com/watch?v=KCrXgy8qtjM)
+
 
 ---
 
