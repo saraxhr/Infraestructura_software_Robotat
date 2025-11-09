@@ -1,154 +1,150 @@
-# 🧩 Backend – Interfaz (Robotat UVG)
+# 🔗 MQTT Bridge – Robotat UVG
 
 ## 📘 Descripción general
 
-Esta carpeta contiene el módulo **`interfaz`**, una aplicación de Django que gestiona la **autenticación, administración de usuarios y registro de actividad** dentro del sistema Robotat UVG.
+La carpeta **`mqtt_bridge`** implementa el **puente de comunicación MQTT-WebSocket** del sistema Robotat UVG.  
+Su función principal es enlazar el **broker Mosquitto** con el **servidor Django (ASGI con Daphne)** y el **frontend web**, permitiendo transmitir datos en tiempo real desde los robots y el sistema de captura de movimiento.
 
-Integra funcionalidades de:
-- Inicio y cierre de sesión con y sin JWT.  
-- Control de roles (Administrador, Estudiante, Investigador).  
-- Cambio de contraseñas con políticas seguras.  
-- Registro de sesiones, logins y estadísticas de uso.  
-- Comunicación con el broker MQTT (para control del Pololu).
+El módulo opera en dos direcciones:
+- **Recepción:** escucha mensajes MQTT (por ejemplo, telemetría o datos del MoCap) y los reenvía al frontend mediante WebSockets.
+- **Emisión:** recibe comandos desde el backend Django y los publica hacia los robots (por ejemplo, Pololu o Crazyflie).
+
+---
+
+## ⚙️ Dependencias necesarias
+
+Asegúrate de instalar las siguientes librerías antes de ejecutar el proyecto con **Daphne**:
+
+```bash
+pip install django djangorestframework channels channels_redis paho-mqtt daphne
+```
+
+> 💡 *`channels_redis` es necesaria si utilizas Redis como backend del Channel Layer para Django Channels.*
 
 ---
 
 ## 📂 Estructura de archivos
 
 ```
-interfaz/
+mqtt_bridge/
 │
-├── admin.py                # Configura la vista de usuarios en el panel admin de Django.
-├── apps.py                 # Define la clase principal de configuración de la app.
-├── models.py               # Contiene los modelos de base de datos (usuarios, sesiones, estadísticas).
-├── serializers.py          # Serializadores DRF para usuarios, contraseñas y registros.
-├── serializers_jwt.py      # Serializer JWT personalizado (login con email y claims adicionales).
-└── views.py                # Endpoints principales de autenticación, CRUD y comunicación MQTT.
+├── __init__.py        # Marca el paquete y enlaza la configuración MqttBridgeConfig.
+├── apps.py            # Inicia automáticamente el cliente MQTT al arrancar el servidor Django.
+├── mqtt_client.py     # Cliente MQTT principal (conexión, publicación y escucha de tópicos).
+├── consumers.py       # Consumer asíncrono para reenviar mensajes a través de WebSockets.
+├── routing.py         # Define las rutas WebSocket (por ejemplo, ws://<servidor>/ws/mqtt/).
+└── ...
 ```
 
 ---
 
-## ⚙️ Dependencias necesarias
+## 🧠 Funcionamiento general
 
-Asegúrate de tener instaladas las siguientes librerías antes de ejecutar el servidor Django:
+### 🔹 1. Inicialización automática
+Cuando el servidor Django se inicia con **Daphne**, la clase `MqttBridgeConfig` (definida en `apps.py`) ejecuta la función `start_mqtt_client()`, que:
+- Conecta al broker Mosquitto.
+- Se suscribe a los tópicos definidos (`mocap/#`, `pololu01/tel`, etc.).
+- Lanza un hilo paralelo con `loop_forever()` para mantener la escucha activa.
 
-```bash
-pip install django djangorestframework djangorestframework-simplejwt paho-mqtt
+### 🔹 2. Comunicación interna (MQTT → Channels)
+Cada mensaje MQTT recibido se envía al *channel layer* de Django mediante:
+
+```python
+async_to_sync(channel_layer.group_send)(
+    "mqtt_logs",
+    {"type": "mqtt_message", "topic": msg.topic, "payload": payload}
+)
 ```
 
----
+Luego, el **consumer** `MqttConsumer` escucha estos eventos y los transmite a los clientes WebSocket conectados.
 
-## 🔐 Configuración importante
+### 🔹 3. Comunicación inversa (Django → MQTT)
+Desde el backend (por ejemplo, el endpoint `/api/enviar-comando/`), los comandos se publican hacia los robots usando:
 
-1. En el archivo `settings.py` del proyecto principal, incluir la app:
-   ```python
-   INSTALLED_APPS = [
-       ...,
-       'rest_framework',
-       'rest_framework_simplejwt',
-       'interfaz',
-   ]
-   ```
-
-2. Configurar Django REST Framework y JWT (en `settings.py`):
-   ```python
-   REST_FRAMEWORK = {
-       'DEFAULT_AUTHENTICATION_CLASSES': (
-           'rest_framework_simplejwt.authentication.JWTAuthentication',
-       ),
-       'DEFAULT_PERMISSION_CLASSES': (
-           'rest_framework.permissions.IsAuthenticated',
-       ),
-   }
-   ```
-
-3. Asegúrate de tener configurado el broker MQTT local o remoto (ver carpeta `mqtt_bridge`).
+```python
+from mqtt_bridge.mqtt_client import publish_command
+publish_command(packet)
+```
 
 ---
 
 ## 🔧 Ejecución del servidor
 
-Para correr el backend desde la raíz del proyecto Django:
+El proyecto usa **Daphne** como servidor ASGI, compatible con Django Channels y WebSockets.
+
+Ejecuta el backend desde la raíz del proyecto:
 
 ```bash
-python manage.py runserver
+daphne -p 8000 robotat_web.asgi:application
 ```
+
+> 📌 Reemplaza `robotat_web` por el nombre del módulo raíz del proyecto que contenga `asgi.py`.
 
 El servidor se levantará por defecto en  
 👉 `http://127.0.0.1:8000/`
 
 ---
 
-## 🚀 Endpoints principales
+## 🌐 Rutas WebSocket
 
-| Tipo | Endpoint | Descripción |
-|------|-----------|-------------|
-| `POST` | `/api/login/` | Login con JWT personalizado |
-| `POST` | `/api/login-simple/` | Login básico (sin token) |
-| `POST` | `/api/logout/` | Cierra sesión y calcula tiempo de uso |
-| `POST` | `/api/auth/password/change/` | Cambio de contraseña con sesión activa |
-| `POST` | `/api/auth/password/change-direct/` | Cambio de contraseña con credenciales |
-| `GET`  | `/api/mi-perfil/` | Devuelve información del usuario autenticado |
-| `GET`  | `/api/logins/` | Lista de logins del día (solo admin) |
-| `GET`  | `/api/statistics/` | Muestra estadísticas de uso diario |
-| `POST` | `/api/enviar-comando/` | Envía comandos MQTT al robot Pololu |
+| Ruta | Descripción |
+|------|--------------|
+| `/ws/mqtt/` | Canal WebSocket que recibe en tiempo real los mensajes reenviados por el cliente MQTT. |
 
----
+Ejemplo de conexión desde el frontend (JavaScript):
 
-## 💾 Modelos definidos
+```javascript
+const socket = new WebSocket("ws://127.0.0.1:8000/ws/mqtt/");
 
-- **`UsuarioPersonalizado`** – Modelo de usuario principal, basado en `AbstractBaseUser`.  
-- **`LoginRecord`** – Registra cada inicio de sesión.  
-- **`UserStatistic`** – Acumula tiempo total de uso por día.  
-- **`UserSession`** – Calcula duración de sesión activa.  
-
----
-
-## 🧠 Notas adicionales
-
-- El campo de autenticación principal es **`email`** (no `username`).  
-- El serializer JWT incluye en el token los campos:
-  - `email`
-  - `nombre`
-  - `role`
-- Los endpoints están protegidos con autenticación JWT.  
-- El sistema registra automáticamente las sesiones y actualiza métricas al cerrar sesión.
-
----
-
-## ▶️ Cómo probar la API
-
-Puedes usar **Postman** o **curl**.  
-Ejemplo de login con JWT:
-
-```bash
-curl -X POST http://127.0.0.1:8000/api/login/      -H "Content-Type: application/json"      -d '{"email": "admin@uvg.edu.gt", "password": "tu_contraseña"}'
+socket.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log("Mensaje MQTT recibido:", data);
+};
 ```
 
 ---
 
-## 🧩 Integración con MQTT
+## 🛰️ Parámetros del cliente MQTT
 
-El endpoint `/api/enviar-comando/` permite enviar paquetes MQTT estructurados hacia el robot Pololu.  
-Depende del módulo `mqtt_bridge.mqtt_client` ubicado en  
-`backend/mqtt_bridge/`.
+| Parámetro | Descripción | Valor por defecto |
+|------------|--------------|------------------|
+| `BROKER` | IP del broker Mosquitto | `192.168.50.200` |
+| `PORT` | Puerto MQTT | `1880` |
+| `TOPIC` | Suscripción general (MoCap) | `"mocap/#"` |
+| `COMMAND_TOPIC` | Tópico de comandos al Pololu | `"pololu01/cmd"` |
+| `TELEMETRY_TOPIC` | Tópico de telemetría del Pololu | `"pololu01/tel"` |
 
-Ejemplo de JSON enviado:
+---
 
-```json
-{
-  "src": 1,
-  "pts": 5,
-  "ptp": 10,
-  "pid": 3,
-  "cks": "a1b2c3",
-  "pld": {"v_l": 0.2, "v_r": 0.2}
+## 📤 Ejemplo de publicación MQTT
+
+```python
+packet = {
+    "src": 1,
+    "pts": 5,
+    "ptp": 10,
+    "pid": 3,
+    "cks": "a1b2c3",
+    "pld": {"v_l": 0.2, "v_r": 0.2}
 }
+
+from mqtt_bridge.mqtt_client import publish_command
+publish_command(packet)
 ```
 
 ---
 
-## 🧱 Autoría y contexto
+## 🧩 Integración con Channels
 
-Proyecto desarrollado como parte del sistema **Robotat UVG**,  
-para la gestión local y futura conexión remota del laboratorio de robótica.
+El archivo `routing.py` define las rutas WebSocket para esta app, mientras que el `asgi.py` principal las integra con el enrutador global del proyecto:
+
+```python
+from channels.routing import ProtocolTypeRouter, URLRouter
+from mqtt_bridge.routing import websocket_urlpatterns
+
+application = ProtocolTypeRouter({
+    "websocket": URLRouter(websocket_urlpatterns),
+})
+```
+
+---
