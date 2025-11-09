@@ -1,26 +1,11 @@
-# 📦 Documentación de archivos clave — `pagina_web`
+# 📦 Carpeta — `pagina_web`
 
-Este README explica **qué son**, **cómo se generan** y **cómo usar** los cuatro archivos que agregaste en tu repositorio raíz `pagina_web`:
-
+En la carpeta de pagina_web, se encuentran los siguientes archivos:
 - `manage.py`
 - `package.json`
 - `package-lock.json`
 - `requirements.txt`
 
-> **Contexto de estructura sugerida**
->
-> ```txt
-> pagina_web/
-> ├─ backend/
-> │  └─ robotat_web/        # Proyecto Django (creado con startproject)
-> ├─ frontend/              # Proyecto React/Vite (npm)
-> ├─ manage.py              # Utilidad administrativa (Django)
-> ├─ package.json           # Manifiesto npm (si decides tener uno en la raíz)
-> ├─ package-lock.json      # Lockfile npm
-> └─ requirements.txt       # Dependencias Python
-> ```
->
-> *Si prefieres aislar frontend, también puedes mover `package.json`/`package-lock.json` a `frontend/`.*
 
 ---
 
